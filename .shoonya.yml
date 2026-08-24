@@ -1,0 +1,19 @@
+application:
+  id: owasp-shoonya-php
+  name: OWASP Shoonya PHP
+  environment: test
+
+repository:
+  type: github
+  language: php
+
+security:
+  sbom:
+    format: cyclonedx-json
+    path: sbom/sbom.cdx.json
+
+  sast:
+    tool: semgrep
+
+  sca:
+    tool: trivy

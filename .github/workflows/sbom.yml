@@ -1,0 +1,37 @@
+name: Generate SBOM
+
+on:
+  push:
+    branches:
+      - master
+      - add-sbom-generation
+
+  pull_request:
+    branches:
+      - master
+
+  workflow_dispatch:
+
+jobs:
+  sbom:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create SBOM directory
+        run: mkdir -p sbom
+
+      - name: Generate CycloneDX SBOM
+        uses: anchore/sbom-action@v0
+        with:
+          path: .
+          format: cyclonedx-json
+          output-file: sbom/sbom.cdx.json
+
+      - name: Upload SBOM artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: php-sbom
+          path: sbom/sbom.cdx.json
